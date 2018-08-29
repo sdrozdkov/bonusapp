@@ -1,7 +1,7 @@
 import os
 import logging
 from pymongo import ReadPreference
-from app import app_name, redis_host, mongo_host
+from app import app_name, redis_host, mongo_host, mail_host
 import redbeat
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -85,10 +85,10 @@ class Config(object):
 
     MONGO_DATABASES = {
         "app": {
-            "username": "user",
-            "password": "password",
+            "username": "root",
+            "password": "example",
             "port": 27017,
-            "host": "mongodb://user:password@{}/{}?authSource=admin".format(mongo_host, app_name),
+            "host": f"mongodb://root:example@{mongo_host}/{app_name}?authSource=admin",
             "db": "{}".format(app_name),
             "read_preference": ReadPreference.PRIMARY,
         }
@@ -123,3 +123,4 @@ class Config(object):
     CONTENT_ISSUES_EMAIL_IDS = []
 
     DEFAULT_MAIL_SENDER = 'bonusapp@example.com'
+    MAIL_SERVER = mail_host

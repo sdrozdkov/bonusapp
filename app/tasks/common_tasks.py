@@ -35,7 +35,7 @@ class AuthCode:
         msg = Message(subject=mail_subject,
                       body=mail_body,
                       sender=current_config.DEFAULT_MAIL_SENDER,
-                      recipients=email)
+                      recipients=[email])
         mail.send(msg)
 
 

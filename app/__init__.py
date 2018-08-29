@@ -16,6 +16,7 @@ import os
 # get redis and mongo host
 redis_host = os.environ.get("redis_host", '127.0.0.1')
 mongo_host = os.environ.get("mongo_host", '127.0.0.1')
+mail_host = os.environ.get("mail_host", '127.0.0.1')
 
 import logging
 import sys
@@ -30,6 +31,7 @@ from flask_cache import Cache
 from flask_cors import CORS
 from flask_mail import Mail
 from flask_socketio import SocketIO
+# from flask_mongoengine import MongoEngine
 from mongoengine import connect
 from slackclient import SlackClient
 from config import config
@@ -46,6 +48,7 @@ current_config = config[config_name]
 socketio = SocketIO()
 cache = Cache(config=current_config.CACHE_CONFIG)
 mail = Mail()
+# db = MongoEngine()
 
 celery_app = Celery(__name__,
                     broker=current_config.CELERY_BROKER_URL,
@@ -54,7 +57,7 @@ celery_app.autodiscover_tasks([__name__])
 
 slack_client = SlackClient(current_config.SLACK_TOKEN)
 
-redis_client = redis.StrictRedis.from_url(current_config.REDIS_DOMAIN, db=0)
+redis_client = redis.StrictRedis.from_url(current_config.REDIS_DOMAIN, db=0, charset="utf-8", decode_responses=True)
 
 auth_redis_client = redis.StrictRedis.from_url(current_config.AUTH_REDIS_URL)
 
@@ -88,6 +91,7 @@ def create_app(main=True):
     # Initialize flask extensions
     cache.init_app(app)
     mail.init_app(app)
+    # db.init_app(app)
 
     # mongoengine connection
     connect(**app.config['MONGO_DATABASES']['app'])

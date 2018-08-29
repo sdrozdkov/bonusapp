@@ -1,13 +1,10 @@
 import json
-import requests
-from functools import wraps
-
-import datetime
-from flask import current_app
-from flask import g
-from flask import jsonify
-from flask import request
 import logging
+import requests
+import datetime
+from functools import wraps
+from flask import current_app, g, jsonify, session, request, redirect, url_for
+from app import redis_client
 
 logger = logging.getLogger(__name__)
 
@@ -18,23 +15,29 @@ def check_authentication():
         def decorated_function(*args, **kwargs):
             logger.debug("in auth decorator")
             if current_app.config['IS_AUTH_ENABLED']:
-                # code to check auth should be here
+                sess_id = session.get('sessid')
+                if not sess_id or sess_id is None:
+                    return redirect(url_for('api.v1.post_email_auth', next=request.url))
+
+                user_id = redis_client.get(f'sessid_{sess_id}')
+                if not user_id or user_id is None:
+                    return redirect(url_for('api.v1.post_email_auth', next=request.url))
+
                 logger.debug("AUTH is ENABLED")
-                user_info = {"username": "", "user_id": ""}
+                user_info = {"user_id": user_id}
                 g.user_info = user_info
-                logger.info("REMOTE_ADDR: {} METHOD: {} URL: {} USERNAME: {} USER_ID: {} \nDATA: {}".format(request.remote_addr, request.method,
-                                                                                 request.url, user_info['username'], user_info['user_id'], request.data))
+                logger.info(
+                    f"REMOTE_ADDR: {request.remote_addr} METHOD: {request.method} URL: {request.url} USER_ID: {user_info['user_id']} \nDATA: {request.data}"
+                )
             else:
                 logger.debug("AUTH is DISABLED")
                 logger.info("REMOTE_ADDR: {} METHOD: {} URL: {} \nDATA: {}".format(request.remote_addr, request.method,
-                                                                                 request.url, request.data))
+                                                                                   request.url, request.data))
 
             return f()
         return decorated_function
 
     return login_required
-
-
 
 
 # # Authentication objects for username/password auth, token auth, and a

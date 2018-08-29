@@ -32,9 +32,11 @@ services:
     links:
       - redis
       - mongo
+      - mail
     depends_on:
       - mongo
       - redis
+      - mail
     environment:
       redis_host: "redis"
       mongo_host: "mongo"
@@ -48,14 +50,16 @@ services:
     links:
       - redis
       - mongo
+      - mail
     depends_on:
       - redis
       - mongo
+      - mail
     environment:
       redis_host: "redis"
       mongo_host: "mongo"
+      mail_host: "mail"
 
-  # Redis
   redis:
     image: redis:4.0.9
     hostname: redis
@@ -66,4 +70,13 @@ services:
     image: mongo:3.6.4
     hostname: mongo
     ports:
-      - "27018:27017"
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+  
+  mail:
+    image: namshi/smtp
+    hostname: mail
+    ports:
+      - "25:25"
