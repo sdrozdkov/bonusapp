@@ -64,13 +64,13 @@ services:
     image: redis:4.0.9
     hostname: redis
     ports:
-      - "6379:6379"
+      - "6379"
 
   mongo:
     image: mongo:3.6.4
     hostname: mongo
     ports:
-      - "27017:27017"
+      - "27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
@@ -79,4 +79,4 @@ services:
     image: namshi/smtp
     hostname: mail
     ports:
-      - "25:25"
+      - "25"
