@@ -29,6 +29,7 @@ Provision some users, if you want add users, check out *app/api/v1/provision.py*
 Now you can try login:
 
 1st step: send email address to login endpoint:
+
 .. code:: shell
 
     curl -i -X POST -H "Content-Type: application/json" http://localhost:8080/api/v1/login -d '{"email":"bundieboss@gmail.com"}'
@@ -47,7 +48,9 @@ Now you can try login:
       }
     }
 
+
 2nd step: user "sess_token" to validate your email code, in my example sess_token value is "sYUd9eybXkjB1BYBmp7fjgeaxnde8tcSSsS7mRXmzXu3a5G047"
+
 .. code:: shell
 
     curl -i -X POST -H "Content-Type: application/json" --cookie "sess_token=sYUd9eybXkjB1BYBmp7fjgeaxnde8tcSSsS7mRXmzXu3a5G047" http://localhost:8080/api/v1/login/validate -d '{"code":"2628"}'
@@ -145,6 +148,7 @@ check your bonus transaction history
 
 
 Use page data from response to paginating over history
+
 .. code:: shell
 
     curl -i -X GET --cookie "session=eyJzZXNzaWQiOiIyRk1ZcU9HYldlOVM0cmhaazUzSktjd0hDdG4weGRoNXVTT2Y2Z3VmVFpGcjNHVGtJbCJ9.DmiWcg.DUvTvKUrPZ_FCJN0DDKSHeSuYW4" 'http://localhost:5000/api/v1/profile/history?page=9'
