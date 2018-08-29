@@ -1,19 +1,19 @@
 import logging
-import json
 from flask import jsonify, request
 from app.models.bonus_card import BonusCardTrx, BonusCard
-import mongoengine
+from app.decorators.auth import api_auth
 
 logger = logging.getLogger(__name__)
 
 
+@api_auth()
 def post_bonus_trx():
     """
-     POST Demo API
+     POST Bonus transaction
      ---
     responses:
       200:
-        description: Returns POST demo api response
+        description: Return 200 OK if trx created
     """
     content = request.get_json()
 
@@ -28,11 +28,7 @@ def post_bonus_trx():
         flight_date=content.get('flight_date'),
     )
 
-    print(bonus_card.to_json())
-
     bonus_card.card_history.append(bonus_trx)
     bonus_card.save()
 
-    # TODO: implement validation data
-
-    return jsonify({'name': "demo post api"}), 200
+    return jsonify({"result": {"message": "ok"}}), 200

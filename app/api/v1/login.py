@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def post_email_auth():
     """
-     POST Demo API
+     POST Email auth
      ---
     responses:
       200:

@@ -124,3 +124,5 @@ class Config(object):
 
     DEFAULT_MAIL_SENDER = 'bonusapp@example.com'
     MAIL_SERVER = mail_host
+
+    API_KEYS = ['6a203a7c98d05eb4f390e683353a16485f2b7379470def0a9ef07e14a376c8b6']

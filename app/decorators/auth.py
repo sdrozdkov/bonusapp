@@ -40,6 +40,32 @@ def check_authentication():
     return login_required
 
 
+def api_auth():
+    def login_required(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            logger.debug("in auth decorator")
+            if current_app.config['IS_AUTH_ENABLED']:
+                if request.headers.get('authorization') not in current_app.config['API_KEYS']:
+                    return jsonify({
+                        "result":
+                        {"message": "access restricted"}
+                    }), 403
+
+                logger.debug("AUTH is ENABLED")
+                logger.info(
+                    f"REMOTE_ADDR: {request.remote_addr} METHOD: {request.method} URL: {request.url} \nDATA: {request.data}"
+                )
+            else:
+                logger.debug("AUTH is DISABLED")
+                logger.info("REMOTE_ADDR: {} METHOD: {} URL: {} \nDATA: {}".format(request.remote_addr, request.method,
+                                                                                   request.url, request.data))
+
+            return f()
+        return decorated_function
+
+    return login_required
+
 # # Authentication objects for username/password auth, token auth, and a
 # # token optional auth that is used for open endpoints.
 # basic_auth = HTTPBasicAuth()
