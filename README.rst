@@ -49,7 +49,7 @@ Now you can try login:
     }
 
 
-2nd step: user "sess_token" to validate your email code, in my example sess_token value is "sYUd9eybXkjB1BYBmp7fjgeaxnde8tcSSsS7mRXmzXu3a5G047"
+2nd step: use "sess_token" to validate your email code, in my example sess_token value is "sYUd9eybXkjB1BYBmp7fjgeaxnde8tcSSsS7mRXmzXu3a5G047"
 
 .. code:: shell
 
