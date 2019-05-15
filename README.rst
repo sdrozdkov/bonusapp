@@ -1,7 +1,7 @@
 BonusApp
 **********
 
-Simple app
+Simple bonus app with some business logic and passwordless authentication.
 
 Usage
 -----
