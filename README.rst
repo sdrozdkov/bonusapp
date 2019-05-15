@@ -6,8 +6,6 @@ Simple bonus app with some business logic and passwordless authentication.
 Usage
 -----
 
-TBD
-
 Pre-required Setup:
 
 Hit below command to start server on port 8080.
